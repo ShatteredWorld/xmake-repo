@@ -15,7 +15,7 @@ package("daxa")
     add_configs("utils_spirv_validation", {description = "Enable SPIRV validation", default = false, type = "boolean"})
     add_configs("utils_fsr3", {description = "Enable FSR3", default = false, type = "boolean"})
 
-    add_deps("vulkansdk", "vulkan-memory-allocator")
+    add_deps("vulkansdk", "vulkan-memory-allocator 3.1.0")
     add_deps("wayland", { system = true, optional = true })
     add_deps("libx11", { system = true, optional = true })
 
@@ -25,11 +25,11 @@ package("daxa")
         end
 
         if package:config("utils_imgui") then
-            package:add("deps", "imgui", "implot")
+            package:add("deps", "imgui v1.90.8-docking", "implot v0.17")
         end
 
         if package:config("utils_pipeline_manager_slang") then
-            package:add("deps", "slang-bin")
+            package:add("deps", "slang-bin 2025.11")
         end
 
         if package:config("utils_pipeline_manager_glslang") then

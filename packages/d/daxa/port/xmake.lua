@@ -1,5 +1,5 @@
 set_project("daxa")
-set_version("3.4")
+set_version("3.5")
 
 set_languages("cxx20")
 
@@ -51,8 +51,8 @@ if has_config("utils_pipeline_manager_glslang") then
 end
 
 if has_config("utils_imgui") then
-    add_requires("imgui docking")
-    add_requires("implot")
+    add_requires("imgui v1.90.8-docking", {configs={glfw=true}})
+    add_requires("implot v0.17")
 end
 
 if has_config("utils_pipeline_manager_spirv_validation") then
@@ -70,7 +70,29 @@ end
 target("daxa")
     set_kind("static")
 
-    add_files("src/**.cpp")
+    add_files(
+        "src/cpp_wrapper.cpp",
+
+        "src/impl_device.cpp",
+        "src/impl_features.cpp",
+        "src/impl_instance.cpp",
+        "src/impl_core.cpp",
+        "src/impl_pipeline.cpp",
+        "src/impl_swapchain.cpp",
+        "src/impl_command_recorder.cpp",
+        "src/impl_gpu_resources.cpp",
+        "src/impl_sync.cpp",
+        "src/impl_dependencies.cpp",
+        "src/impl_timeline_query.cpp",
+
+        "src/utils/impl_task_graph_ui.cpp",
+        "src/utils/impl_resource_viewer.cpp",
+        "src/utils/impl_task_graph.cpp",
+        "src/utils/impl_imgui.cpp",
+        "src/utils/impl_fsr2.cpp",
+        "src/utils/impl_mem.cpp",
+        "src/utils/impl_pipeline_manager.cpp"
+    )
 
     add_includedirs("include", {public = true})
 
@@ -78,7 +100,7 @@ target("daxa")
 
     add_defines("DAXA_CMAKE_EXPORT=", {public = true})
 
-    add_defines('DAXA_SHADER_INCLUDE_DIR="include"', {public = true})
+    add_defines(("DAXA_SHADER_INCLUDE_DIR=" .. os.projectdir() .. "/include"), { public = true })
 
     if has_config("utils_fsr3") then
         add_defines("DAXA_BUILT_WITH_UTILS_FSR3=true", {public = true})
